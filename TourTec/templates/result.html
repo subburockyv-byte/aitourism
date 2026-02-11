@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Travel Planner - Result</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --accent-orange: #ff922b;
+            --text-dark: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/6/65/Varanasi_Ghats.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-dark);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 244, 230, 0.7);
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 35px 45px;
+            border-radius: 25px;
+            margin-bottom: 35px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255,145,43,0.3);
+            border-left: 10px solid var(--primary-blue);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 25px rgba(255,145,43,0.4);
+        }
+
+        h2, h3 {
+            color: var(--primary-blue);
+            border-bottom: 3px solid var(--accent-orange);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s, transform 0.2s;
+            margin: 5px;
+        }
+
+        .btn-download {
+            background: var(--accent-orange);
+        }
+
+        .btn:hover { 
+            opacity: 0.85; 
+            transform: translateY(-2px);
+        }
+
+        .time-slot {
+            margin: 12px 0;
+            padding-left: 14px;
+            border-left: 3px solid #eee;
+        }
+
+        .top-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2; /* ensure it’s above overlay */
+        }
+
+        @media print {
+            .no-print, .top-buttons { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Buttons -->
+    <div class="container top-buttons no-print">
+    <a href="/previous-trips"><button class="btn">View Previous Trips</button></a>
+</div>
+
+    <div class="container" id="itinerary-content">
+        <h2>Your Personalized Itinerary</h2>
+
+        <div class="card info-grid">
+            <div><b>Destination:</b> {{ destination }}</div>
+            <div><b>Days:</b> {{ days }}</div>
+            <div><b>Budget:</b> {{ budget }} INR</div>
+            <div><b>Travelers:</b> {{ travelers }}</div>
+            <div><b>Dates:</b> {{ start_date }} to {{ end_date }}</div>
+            <div><b>Transport:</b> {{ transport }}</div>
+        </div>
+
+        <h3>Generated Plan</h3>
+        {% for day in itinerary.itinerary %}
+        <div class="card">
+            <b style="color: var(--accent-orange); font-size: 1.3em;">Day {{ day.day }}</b><br>
+            <small>Weather: {{ day.weather.condition }}, {{ day.weather.temperature }}°C — <i>{{ day.weather.tip }}</i></small>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 12px 0;">
+            {% for slot in day.plan %}
+                <div class="time-slot">
+                    <b style="color: var(--primary-blue)">{{ slot.time }}</b>: {{ slot.activity }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Bottom Buttons -->
+    <div class="container no-print" style="text-align: center; margin-top: 30px; position: relative; z-index: 2;">
+        <a href="/"><button class="btn">Plan Again</button></a>
+        
+    </div>
+
+    <script>
+        
+
+        // --- Save current trip to localStorage ---
+        window.onload = function() {
+            const trip = {
+                destination: "{{ destination }}",
+                start_date: "{{ start_date }}",
+                end_date: "{{ end_date }}",
+                travelers: "{{ travelers }}",
+                budget: "{{ budget }}",
+                transport: "{{ transport }}"
+            };
+
+            let trips = JSON.parse(localStorage.getItem('trips')) || [];
+            trips.push(trip);
+            localStorage.setItem('trips', JSON.stringify(trips));
+        };
+        <div class="container top-buttons no-print">
+    <a href="/previous-trips"><button class="btn">View Previous Trips</button></a>
+</div>
+
+        // --- View Previous Trips ---
+        function showPreviousTrips() {
+            let trips = JSON.parse(localStorage.getItem('trips')) || [];
+            if(trips.length === 0){
+                alert("No previous trips found!");
+                return;
+            }
+
+            let list = "Your Previous Trips:\n\n";
+            trips.forEach((t, index) => {
+                list += `${index + 1}. ${t.destination} | ${t.start_date} to ${t.end_date} | ${t.travelers} traveler(s) | Budget: ${t.budget}\n`;
+            });
+
+            alert(list);
+        }
+    </script>
+</body>
+</html>

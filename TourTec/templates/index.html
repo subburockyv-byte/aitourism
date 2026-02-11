@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Travel Planner</title>
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #000;
+        }
+
+        .glassy-card {
+            width: 90%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #000;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        input[type="text"], 
+        input[type="number"], 
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.1);
+            outline: none;
+            font-size: 14px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.8);
+            color: #000;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(5px);
+            color: #000;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: #000;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 50px;
+            background: #007BFF;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 123, 255, 0.6);
+        }
+
+        /* --- UPDATED AI ASSISTANT STYLES --- */
+        #ai-assistant-btn {
+            position: fixed; bottom: 25px; right: 25px;
+            width: 65px; height: 65px;
+            background: linear-gradient(135deg, #007BFF, #0056b3);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 1001;
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.5);
+            transition: transform 0.2s;
+        }
+
+        #ai-assistant-btn:hover { transform: scale(1.1); }
+
+        #ai-assistant-chat {
+            position: fixed; bottom: 105px; right: 25px;
+            width: 400px; /* Bigger width */
+            height: 600px; /* Bigger height */
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 25px;
+            display: none; flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            z-index: 1000; overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        #chat-header { 
+            background: rgba(255, 255, 255, 0.5); 
+            padding: 20px; 
+            border-bottom: 1px solid rgba(0,0,0,0.05); 
+            display: flex; justify-content: space-between; align-items: center; 
+            font-weight: bold; font-size: 1.1em;
+        }
+
+        #chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+        
+        .msg { padding: 12px 16px; border-radius: 18px; font-size: 14px; max-width: 85%; line-height: 1.5; }
+        
+        .ai-msg { align-self: flex-start; }
+        .ai-msg .msg { background: #ffffff; color: #333; border-bottom-left-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        
+        .user-msg { align-self: flex-end; }
+        .user-msg .msg { background: #007BFF; color: white; border-bottom-right-radius: 4px; }
+
+        .input-area { padding: 20px; display: flex; gap: 10px; background: rgba(255,255,255,0.4); }
+        
+        #chat-input { 
+            flex: 1; border: 1px solid rgba(0,0,0,0.1); border-radius: 20px; 
+            padding: 10px 15px; outline: none; background: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glassy-card">
+        <h2>AI Travel Planner</h2>
+
+        <form action="/planner" method="post">
+            <label>Destination</label>
+            <input type="text" name="destination" placeholder="Enter city or country" required>
+
+            <div class="row">
+                <div style="flex:1; min-width: 200px;">
+                    <label>Start Date</label>
+                    <input type="date" name="start_date" id="start_date" required>
+                </div>
+                <div style="flex:1; min-width: 200px;">
+                    <label>End Date</label>
+                    <input type="date" name="end_date" id="end_date" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div style="flex:1; min-width: 200px;">
+                    <label>Number of Travelers</label>
+                    <input type="number" name="travelers" min="1" value="1" required>
+                </div>
+                <div style="flex:1; min-width: 200px;">
+                    <label>Trip Vibe (Pace)</label>
+                    <select name="vibe">
+                        <option value="relaxed">Relaxed (Leisurely)</option>
+                        <option value="balanced" selected>Balanced (Standard)</option>
+                        <option value="packed">Action Packed (See everything)</option>
+                    </select>
+                </div>
+            </div>
+
+            <label>Select Budget Type</label>
+            <select name="budget">
+                <option>Low Budget</option>
+                <option>Medium Budget</option>
+                <option>High Budget</option>
+            </select>
+
+            <div class="row">
+                <div style="flex:1; min-width: 280px;">
+                    <label>Interests</label>
+                    <div class="options">
+                        <label class="option-item"><input type="checkbox" name="interests" value="Adventure"> Adventure</label>
+                        <label class="option-item"><input type="checkbox" name="interests" value="Food"> Food</label>
+                        <label class="option-item"><input type="checkbox" name="interests" value="Nature"> Nature</label>
+                        <label class="option-item"><input type="checkbox" name="interests" value="Shopping"> Shopping</label>
+                        <label class="option-item"><input type="checkbox" name="interests" value="Beaches"> Beaches</label>
+                        <label class="option-item"><input type="checkbox" name="interests" value="Historical"> Historical</label>
+                    </div>
+                </div>
+
+                <div style="flex:1; min-width: 280px;">
+                    <label>Transportation Preferences</label>
+                    <div class="options">
+                        <label class="option-item"><input type="checkbox" name="transport" value="Cycling"> Cycling</label>
+                        <label class="option-item"><input type="checkbox" name="transport" value="Train"> Train</label>
+                        <label class="option-item"><input type="checkbox" name="transport" value="Bus"> Bus</label>
+                        <label class="option-item"><input type="checkbox" name="transport" value="Bike"> Bike</label>
+                        <label class="option-item"><input type="checkbox" name="transport" value="Car"> Car</label>
+                        <label class="option-item"><input type="checkbox" name="transport" value="Flight"> Flight</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button type="submit" class="btn">Generate Itinerary</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="ai-assistant-btn">
+        <svg width="28" height="28" fill="white" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2 22l5-1.338C8.47 21.513 10.179 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+    </div>
+
+    <div id="ai-assistant-chat">
+        <div id="chat-header">
+            <span>🌍 TRAIV AI Assistant</span>
+            <span id="close-chat" style="cursor:pointer; font-size: 20px;">&times;</span>
+        </div>
+        <div id="chat-body">
+            <div class="ai-msg">
+                <div class="msg">Hello! I'm your travel expert for 2026. I can help you with <b>weather</b>, <b>budgets</b>. What are you planning?</div>
+            </div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="chat-input" placeholder="Ask about weather, transport...">
+            <button id="send-btn" style="background:none; border:none; color:#007BFF; font-weight:bold; cursor:pointer; font-size:16px;">Send</button>
+        </div>
+    </div>
+
+    <script>
+    const chatBtn = document.getElementById('ai-assistant-btn');
+    const chatWindow = document.getElementById('ai-assistant-chat');
+    const chatInput = document.getElementById('chat-input');
+    const chatBody = document.getElementById('chat-body');
+    const sendBtn = document.getElementById('send-btn');
+
+    chatBtn.onclick = () => {
+        chatWindow.style.display = (chatWindow.style.display === 'flex') ? 'none' : 'flex';
+    };
+
+    document.getElementById('close-chat').onclick = () => {
+        chatWindow.style.display = 'none';
+    };
+
+    function addMessage(text, type, isThinking = false) {
+        const wrapper = document.createElement('div');
+        wrapper.className = type === 'user' ? 'user-msg' : 'ai-msg';
+        if (isThinking) {
+            wrapper.innerHTML = `<div class="msg" id="thinking-node">
+                                    <div class="dots">
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                    </div>
+                                </div>`;
+        } else {
+            wrapper.innerHTML = `<div class="msg">${text}</div>`;
+        }
+        chatBody.appendChild(wrapper);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        return wrapper;
+    }
+
+    const INR_BUDGETS = { low: 3500, standard: 8500, premium: 25000 };
+
+    function handleAIResponse(userText) {
+        const query = userText.toLowerCase().trim();
+        const thinkingBubble = addMessage("", "ai", true);
+
+        setTimeout(() => {
+            thinkingBubble.remove();
+            let response = "";
+
+            // SPECIFIC LANDMARKS
+            if (query.includes("taj mahal")) {
+                response = "The <b>Taj Mahal</b> is located in <b>Agra, Uttar Pradesh, India</b>. It is one of the Seven Wonders of the World and a UNESCO World Heritage site.";
+            } 
+            else if (query.includes("hampi")) {
+                response = "<b>Hampi</b> is an ancient UNESCO site located in the <b>Vijayanagara district of Karnataka, India</b>. The nearest hub is Hospet.";
+            }
+            else if (query.includes("eiffel tower")) {
+                response = "The <b>Eiffel Tower</b> is located in <b>Paris, France</b> on the Champ de Mars.";
+            }
+            // GEOGRAPHY & LOCATION
+            else if (query.includes("where is") || query.includes("location of") || query.includes("which city")) {
+                let city = userText.replace(/where is|location of|which city is|located in|the|\?/gi, "").trim();
+                if (city) {
+                    response = `<b>${city}</b> is a great destination! In 2026, it's trending for its unique culture. Would you like me to find the best way to reach there?`;
+                } else {
+                    response = "Could you please specify the name of the city or monument you are looking for?";
+                }
+            }
+            // WEATHER & SEASONS
+            else if (query.includes("weather") || query.includes("best time") || query.includes("temperature")) {
+                response = "For <b>North India</b>, October–March is best; for <b>South India</b>, November–February is ideal"; 
+            }else if (query.includes("weather") || query.includes("best time") || query.includes("temperature")) {
+                response = "Here’s the forecast for the next 3 days: <br>• Day 1: Sunny, 28°C<br>• Day 2: Partly Cloudy, 27°C<br>• Day 3: Light Showers, 26°C";
+ 
+            }
+            // BUDGETS
+            else if (query.includes("budget") || query.includes("cost") || query.includes("expensive")) {
+                response = `<b>Estimated 2026 Daily Costs:</b><br>• <b>Budget:</b> ₹${INR_BUDGETS.low}<br>• <b>Mid-range:</b> ₹${INR_BUDGETS.standard}<br>• <b>Luxury:</b> ₹${INR_BUDGETS.premium}`;
+            }
+            // GREETINGS
+            else if (query.includes("hello") || query.includes("hi") || query.includes("hey")) {
+                response = "Hello! I'm your AI Travel Assistant. I can tell you where places are, suggest budgets, or check the best time to visit. How can I help?";
+            }
+            // DEFAULT
+            else {
+                response = "That's a good question! I'm specialized in <b>locations, weather, and travel budgets</b> for 2026. Could you tell me more about your trip?";
+            }
+
+            addMessage(response, 'ai');
+        }, 800);
+    }
+
+    function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+        addMessage(text, 'user');
+        chatInput.value = '';
+        handleAIResponse(text);
+    }
+
+    sendBtn.onclick = sendMessage;
+    chatInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
+</script>
+
+
+</body>
+</html>

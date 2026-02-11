@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore India</title>
+
+<style>
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80")
+    no-repeat center/cover fixed;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1150px;
+    margin: 40px auto;
+    padding: 30px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+}
+
+h1 {
+    color: #fff;
+    font-size: 44px;
+    margin-bottom: 30px;
+}
+
+/* CITY CARD */
+.city {
+    background: rgba(0,0,0,0.55);
+    border-radius: 20px;
+    margin-bottom: 22px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.city-header {
+    display: flex;
+    height: 150px;
+}
+
+.city-header img {
+    width: 35%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.city-info {
+    padding: 22px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.city-info h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.city-info span {
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+/* SUBPLACES */
+.subplaces {
+    display: none;
+    padding: 20px;
+    background: rgba(255,255,255,0.08);
+}
+
+.subplace {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+}
+
+.subplace:last-child { border-bottom: none; }
+
+.subplace img {
+    width: 110px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.subplace-text { color: #fff; }
+
+.subplace-text strong {
+    font-size: 16px;
+    display: block;
+}
+
+.subplace-text span {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.btn {
+    display: inline-block;
+    margin: 20px 0;
+    padding: 12px 24px;
+    background: #ff9800;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>Places In India</h1>
+
+<!-- MUMBAI -->
+<div class="city" onclick="toggle(this)">
+  <div class="city-header">
+    <img src="https://images.unsplash.com/photo-1598434192043-71111c1b3f41?q=80&w=1335&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="city-info">
+      <h2>Mumbai</h2>
+      <span>Coastal city & nightlife</span>
+    </div>
+  </div>
+  <div class="subplaces">
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/93173797/photo/mumbai-vt-station.jpg?s=612x612&w=is&k=20&c=Am4a9-yDaQRlRobkqiHvz_PLfXYSWjDlMt2iD9Mos-E=">
+      <div class="subplace-text"><strong>Chhatrapati Shivaji Terminus</strong><span>₹8k–12k</span></div>
+    </div>
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/1393386809/photo/aerial-view-of-south-mumbai-skyline-in-late-afternoon-mist-showing-elite-marine-drive-stretch.jpg?s=612x612&w=is&k=20&c=0aTQN6pb41hRqHaSnHYjpGzeBOG0Jf8sb_01VhOVBZI=">
+      <div class="subplace-text"><strong>Marine Drive</strong><span>₹5k–8k</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- GOA -->
+<div class="city" onclick="toggle(this)">
+  <div class="city-header">
+    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80">
+    <div class="city-info">
+      <h2>Goa</h2>
+      <span>Beaches & parties</span>
+    </div>
+  </div>
+  <div class="subplaces">
+    <div class="subplace">
+      <img src="https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=800&q=80">
+      <div class="subplace-text"><strong>Baga Beach</strong><span>₹10k–15k</span></div>
+    </div>
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/1251064096/photo/saligao-goa-india-mae-de-deus-church-local-landmark.jpg?s=612x612&w=0&k=20&c=9uw0qTCQfu7dIsU4Hd7QwpQ5QefLgH5AcWm7TGJVbTo=">
+      <div class="subplace-text"><strong>Church</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- HAMPI -->
+<div class="city" onclick="toggle(this)">
+  <div class="city-header">
+    <img src="https://plus.unsplash.com/premium_photo-1697730504977-26847b1f1f91?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="city-info">
+      <h2>Hampi</h2>
+      <span>Ancient ruins & temples</span>
+    </div>
+  </div>
+  <div class="subplaces">
+    <div class="subplace">
+      <img src="https://images.unsplash.com/photo-1651597177295-c3a0c2cda7f2?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8dmlydXBha3NoYSUyMHRlbXBsZXxlbnwwfHwwfHx8MA%3D%3D">
+      <div class="subplace-text"><strong>Virupaksha Temple</strong><span>₹5k–8k</span></div>
+    </div>
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/1382323825/photo/the-lotus-mahal-or-kamal-mahal-or-chitragani-mahal.jpg?s=612x612&w=0&k=20&c=6ksHqhZv3Dnq7BqI8cM8xtPLRpIoOb7-98UM4BDY4yg=">
+      <div class="subplace-text"><strong>Lotus Mahal</strong><span>₹5k–8k</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HYDERABAD -->
+<div class="city" onclick="toggle(this)">
+  <div class="city-header">
+    <img src="https://images.unsplash.com/photo-1551161242-b5af797b7233?q=80&w=2051&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="city-info">
+      <h2>Hyderabad</h2>
+      <span>Nizams & tech city</span>
+    </div>
+  </div>
+  <div class="subplaces">
+    <div class="subplace">
+      <img src="https://images.unsplash.com/photo-1646818550233-4c033f82399c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+      <div class="subplace-text"><strong>Golconda Fort</strong><span>₹25–300</span></div>
+    </div>
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/1398829319/photo/baburs-tomb-at-humayuns-tomb-complex-in-delhi-india-asia.jpg?s=612x612&w=0&k=20&c=AkL6S8rjaFhCyG4zL-EiKq5UZ_UO_4ssVvL5iAqco2M=">
+      <div class="subplace-text"><strong>Qutb Shahi Tombs</strong><span>₹25–300</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MANIPUR -->
+<div class="city" onclick="toggle(this)">
+  <div class="city-header">
+    <img src="https://images.unsplash.com/photo-1692652567309-5ac9ae7fe6f7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="city-info">
+      <h2>Manipur</h2>
+      <span>Hills & lakes</span>
+    </div>
+  </div>
+  <div class="subplaces">
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/1015836388/photo/loktak-lake-manipur.jpg?s=612x612&w=is&k=20&c=1cK7_Ur5OhBxsY2YFE1gBTE-5GjnQMdgrQ6NnUROuMk=">
+      <div class="subplace-text"><strong>Loktak Lake</strong><span>₹8k–12k</span></div>
+    </div>
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/1217731203/photo/loktak-lake-and-reflection.jpg?s=612x612&w=is&k=20&c=HgAOzTQ9gqADMw5WbWKn1cn5yWW4I1BTdpVYwaSJBuw=">
+      <div class="subplace-text"><strong>Kudroli Sri Gokarnanatha Kshetra</strong><span>₹6k–9k</span></div>
+    </div>
+    <div class="subplace">
+      <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=1368&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+      <div class="subplace-text"><strong>Surathkal Beach</strong><span>₹7k–11k</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MANGALORE -->
+<div class="city" onclick="toggle(this)">
+  <div class="city-header">
+    <img src="https://media.istockphoto.com/id/89221333/photo/ullal-beach.jpg?s=612x612&w=is&k=20&c=ipNelhAh5RnOsfFUOoiSmmoNZHBJdeMHwFF7xgpvRoM=">
+    <div class="city-info">
+      <h2>Mangalore</h2>
+      <span>Beaches & temples</span>
+    </div>
+  </div>
+  <div class="subplaces">
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/1133440724/photo/view-on-colorful-hindu-temple-in-colombo-sri-lanka.jpg?s=612x612&w=is&k=20&c=IS8VOK75FuaLGPumNnZTpVEqX6e3iI1y_6ez3Ur0IF0=">
+      <div class="subplace-text"><strong>Kudroli Sri Gokarnanatha Kshetra</strong><span>₹6k–9k</span></div>
+    </div>
+    <div class="subplace">
+      <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=1368&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+      <div class="subplace-text"><strong>Surathkal Beach</strong><span>₹7k–11k</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- AGRA -->
+<div class="city" onclick="toggle(this)">
+  <div class="city-header">
+    <img src="https://images.unsplash.com/photo-1612810436541-336b73fbcf9f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="city-info">
+      <h2>Agra</h2>
+      <span>Iconic monument</span>
+    </div>
+  </div>
+  <div class="subplaces">
+    <div class="subplace">
+      <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80">
+      <div class="subplace-text"><strong>Taj Mahal</strong><span>₹7k–11k</span></div>
+    </div>
+    <div class="subplace">
+      <img src="https://images.unsplash.com/photo-1591018653367-9c01498b3320?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+      <div class="subplace-text"><strong>Agra Fort</strong><span>₹7k–11k</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- JAIPUR -->
+<div class="city" onclick="toggle(this)">
+  <div class="city-header">
+    <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="city-info">
+      <h2>Jaipur</h2>
+      <span>Royal heritage</span>
+    </div>
+  </div>
+  <div class="subplaces">
+    <div class="subplace">
+      <img src="https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=927&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+      <div class="subplace-text"><strong>Amber Fort</strong><span>₹8k–12k</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- BANGALORE -->
+<div class="city" onclick="toggle(this)">
+  <div class="city-header">
+    <img src="https://images.unsplash.com/photo-1675589412450-571c4a5afe6e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="city-info">
+      <h2>Bangalore</h2>
+      <span>Tech hub & gardens</span>
+    </div>
+  </div>
+  <div class="subplaces">
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/1382865466/photo/bangalore-or-bengaluru.jpg?s=612x612&w=is&k=20&c=kke4YSlRn0E_0p8P8gdAeocQAj8K01AN8VcG1C53yzo=">
+      <div class="subplace-text"><strong>Lalbagh Botanical Garden</strong><span>₹5k–8k</span></div>
+    </div>
+    <div class="subplace">
+      <img src="https://media.istockphoto.com/id/1194408153/photo/bangalore-palace-bengaluru-karnataka-india.jpg?s=612x612&w=is&k=20&c=BO2Jujf0tIjPaV81To8M7TCVEJQX2P2UxgKFsEBd3Qw=">
+      <div class="subplace-text"><strong>Bangalore Palace</strong><span>₹6k–9k</span></div>
+    </div>
+  </div>
+</div>
+
+<a href="{{ url_for('planner') }}" class="btn">Start Planning →</a>
+
+</div>
+
+<script>
+function toggle(city) {
+    const sub = city.querySelector(".subplaces");
+    sub.style.display = sub.style.display === "block" ? "none" : "block";
+}
+</script>
+
+</body>
+</html>

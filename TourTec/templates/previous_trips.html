@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Previous Trips - AI Travel Planner</title>
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --accent-orange: #ff922b;
+            --text-dark: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-dark);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top:0; left:0; right:0; bottom:0;
+            background: rgba(255,255,255,0.7);
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 40px;
+            font-size: 36px;
+            border-bottom: 3px solid var(--accent-orange);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .trip-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 20px rgba(0,123,255,0.2);
+            border-left: 8px solid var(--primary-blue);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .trip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 25px rgba(0,123,255,0.3);
+        }
+
+        .trip-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--accent-orange);
+        }
+
+        .trip-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .trip-info div b {
+            color: var(--primary-blue);
+        }
+
+        .btn-back {
+            display: block;
+            margin: 30px auto;
+            padding: 14px 40px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-back:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 700px) {
+            .trip-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Previous Trips</h2>
+        <div id="trips-list"></div>
+        <a href="/"><div class="btn-back">Back to Planner</div></a>
+    </div>
+
+    <script>
+        // Load trips from localStorage
+        const trips = JSON.parse(localStorage.getItem('trips')) || [];
+        const container = document.getElementById('trips-list');
+
+        if(trips.length === 0){
+            container.innerHTML = "<p style='text-align:center; font-size:18px;'>No previous trips found.</p>";
+        } else {
+            trips.forEach((trip, index) => {
+                const card = document.createElement('div');
+                card.className = 'trip-card';
+                card.innerHTML = `
+                    <h3>Trip ${index + 1}: ${trip.destination}</h3>
+                    <div class="trip-info">
+                        <div><b>Dates:</b> ${trip.start_date} to ${trip.end_date}</div>
+                        <div><b>Travelers:</b> ${trip.travelers}</div>
+                        <div><b>Budget:</b> ${trip.budget}</div>
+                        <div><b>Transport:</b> ${trip.transport}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
